@@ -49,7 +49,7 @@ export default function Bazin() {
   return (
     <div className="flex flex-col gap-2">
       <div className="flex gap-2">
-        <Card>
+        <Card className="shadow-slate-400 shadow-lg">
           <CardHeader>
             <CardTitle>Preço teto</CardTitle>
             <CardDescription>Calcular o preço teto Bazin</CardDescription>
@@ -99,7 +99,7 @@ export default function Bazin() {
             </div>
           </CardContent>
         </Card>
-        <Card className="bg-slate-700 flex flex-col justify-around">
+        <Card className="shadow-slate-400 shadow-lg bg-slate-700 flex flex-col justify-around">
           <CardHeader className="pb-1">
             <CardTitle className="text-white">Div. Médio %</CardTitle>
           </CardHeader>
@@ -118,7 +118,7 @@ export default function Bazin() {
         </Card>
       </div>
 
-      <Card>
+      <Card className="shadow-slate-400 shadow-lg">
         <CardHeader>
           <CardTitle>Retorno Esperado (%)</CardTitle>
         </CardHeader>
