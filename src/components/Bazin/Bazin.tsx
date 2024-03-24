@@ -66,7 +66,7 @@ export default function Bazin() {
               />
             </div>
             <div className="flex flex-col gap-1">
-              <Label>Dividend dos últimos 3 anos</Label>
+              <Label>Dividendos dos últimos 3 anos</Label>
               <div className="grid gap-1 grid-cols-3">
                 <div>
                   <Input
