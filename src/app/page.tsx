@@ -3,7 +3,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+    <main className="flex min-h-screen flex-col items-center justify-between sm:p-24 p-5">
       <Tabs defaultValue="method-bazin">
         <TabsList className="grid w-full grid-cols-3 gap-4">
           <TabsTrigger value="method-bazin">Método Bazin</TabsTrigger>

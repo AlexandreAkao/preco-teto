@@ -48,7 +48,7 @@ export default function Bazin() {
 
   return (
     <div className="flex flex-col gap-2">
-      <div className="flex gap-2">
+      <div className="sm:flex grid gap-2">
         <Card className="shadow-slate-400 shadow-lg">
           <CardHeader>
             <CardTitle>Preço teto</CardTitle>
