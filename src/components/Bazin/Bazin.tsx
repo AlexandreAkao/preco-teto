@@ -11,15 +11,20 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
+import { Switch } from "@/components/ui/switch";
 
 export default function Bazin() {
   const [divYear1, setDivYear1] = useState("");
   const [divYear2, setDivYear2] = useState("");
   const [divYear3, setDivYear3] = useState("");
   const [currentPrice, setCurrentPrice] = useState("");
+  const [avaregeMode, setAvaregeMode] = useState("");
+  const [isAvaregeMode, setIsAvaregeMode] = useState(false);
 
   const calcAverageDiv = () =>
-    (Number(divYear1) + Number(divYear2) + Number(divYear3)) / 3;
+    isAvaregeMode
+      ? Number(avaregeMode)
+      : (Number(divYear1) + Number(divYear2) + Number(divYear3)) / 3;
 
   const calcAverageDivPorcent = () => {
     if (Number(currentPrice) === 0) return "-";
@@ -66,36 +71,69 @@ export default function Bazin() {
               />
             </div>
             <div className="flex flex-col gap-1">
-              <Label>Dividendos dos últimos 3 anos</Label>
-              <div className="grid gap-1 grid-cols-3">
-                <div>
-                  <Input
-                    id="dividend-1"
-                    placeholder="0,00"
-                    step="0.01"
-                    type="number"
-                    onChange={(event) => setDivYear1(event.target.value)}
-                  />
-                </div>
-                <div>
-                  <Input
-                    id="dividend-2"
-                    placeholder="0,00"
-                    step="0.01"
-                    type="number"
-                    onChange={(event) => setDivYear2(event.target.value)}
-                  />
-                </div>
-                <div>
-                  <Input
-                    id="dividend-3"
-                    placeholder="0,00"
-                    step="0.01"
-                    type="number"
-                    onChange={(event) => setDivYear3(event.target.value)}
-                  />
-                </div>
+              <div className="flex items-center space-x-2">
+                <Switch
+                  size="small"
+                  id="avarage-mode"
+                  aria-readonly
+                  onCheckedChange={setIsAvaregeMode}
+                  checked={isAvaregeMode}
+                />
+                <Label className="text-gray-600" htmlFor="avarage-mode">
+                  Média dos ultimos 3 anos?
+                </Label>
               </div>
+              {isAvaregeMode ? (
+                <>
+                  <Label>Valor Média dos dividendos</Label>
+                  <div className="grid gap-1 grid-cols-3">
+                    <Input
+                      id="dividend"
+                      placeholder="0,00"
+                      step="0.01"
+                      type="number"
+                      value={avaregeMode}
+                      onChange={(event) => setAvaregeMode(event.target.value)}
+                    />
+                  </div>
+                </>
+              ) : (
+                <>
+                  <Label>Dividendos dos últimos 3 anos</Label>
+                  <div className="grid gap-1 grid-cols-3">
+                    <div>
+                      <Input
+                        id="dividend-1"
+                        placeholder="0,00"
+                        step="0.01"
+                        type="number"
+                        value={divYear1}
+                        onChange={(event) => setDivYear1(event.target.value)}
+                      />
+                    </div>
+                    <div>
+                      <Input
+                        id="dividend-2"
+                        placeholder="0,00"
+                        step="0.01"
+                        type="number"
+                        value={divYear2}
+                        onChange={(event) => setDivYear2(event.target.value)}
+                      />
+                    </div>
+                    <div>
+                      <Input
+                        id="dividend-3"
+                        placeholder="0,00"
+                        step="0.01"
+                        type="number"
+                        value={divYear3}
+                        onChange={(event) => setDivYear3(event.target.value)}
+                      />
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
           </CardContent>
         </Card>
@@ -103,7 +141,7 @@ export default function Bazin() {
           <CardHeader className="pb-1">
             <CardTitle className="text-white">Div. Médio %</CardTitle>
           </CardHeader>
-          <CardContent className="text-white">
+          <CardContent className="text-white text-xl italic">
             {calcAverageDivPorcent()}
           </CardContent>
 
@@ -112,7 +150,7 @@ export default function Bazin() {
           <CardHeader className="pb-1">
             <CardTitle className="text-white">Div. Médio Anual</CardTitle>
           </CardHeader>
-          <CardContent className="text-white">
+          <CardContent className="text-white text-xl italic">
             {calcAverageYearDiv()}
           </CardContent>
         </Card>
@@ -127,45 +165,25 @@ export default function Bazin() {
             <Label className="w-10" htmlFor="current-price">
               10%
             </Label>
-            <Input
-              id="current-price"
-              placeholder="R$ 0,00"
-              disabled
-              value={calcProfit()[10]}
-            />
+            <Input placeholder="R$ 0,00" disabled value={calcProfit()[10]} />
           </div>
           <div className="flex items-center gap-4">
             <Label className="w-10" htmlFor="current-price">
               8%
             </Label>
-            <Input
-              id="current-price"
-              placeholder="R$ 0,00"
-              disabled
-              value={calcProfit()[8]}
-            />
+            <Input placeholder="R$ 0,00" disabled value={calcProfit()[8]} />
           </div>
           <div className="flex items-center gap-4">
             <Label className="w-10" htmlFor="current-price">
               7%
             </Label>
-            <Input
-              id="current-price"
-              placeholder="R$ 0,00"
-              disabled
-              value={calcProfit()[7]}
-            />
+            <Input placeholder="R$ 0,00" disabled value={calcProfit()[7]} />
           </div>
           <div className="flex items-center gap-4">
             <Label className="w-10" htmlFor="current-price">
               6%
             </Label>
-            <Input
-              id="current-price"
-              placeholder="R$ 0,00"
-              disabled
-              value={calcProfit()[6]}
-            />
+            <Input placeholder="R$ 0,00" disabled value={calcProfit()[6]} />
           </div>
         </CardContent>
       </Card>
