@@ -18,16 +18,8 @@ import {
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-
 import ErrorContainer from "@/components/ErrorContainer";
+import CollapsibleTableFiis from "@/components/CollapsibleTableFiis";
 
 type dataTable = {
   month: number;
@@ -62,7 +54,7 @@ type FiisCalcSchemaType = z.infer<typeof fiisCalcSchema>;
 export default function FiisCalc() {
   const [timeType, setTimeType] = useState("year");
   const [hasReinvest, setHasReinvest] = useState(true);
-  const [data, setData] = useState<dataTable[]>([]);
+  const [data, setData] = useState<JSX.Element[]>([]);
 
   const {
     register,
@@ -70,6 +62,9 @@ export default function FiisCalc() {
     formState: { errors, isValid },
   } = useForm<FiisCalcSchemaType>({
     resolver: zodResolver(fiisCalcSchema),
+    defaultValues: {
+      quantity: 0,
+    },
   });
 
   const calc: SubmitHandler<FiisCalcSchemaType> = (fiisCalcData) => {
@@ -118,7 +113,18 @@ export default function FiisCalc() {
       }
     }
 
-    setData(arr);
+    const arrWithCollapsible = [];
+
+    for (let i = 0, year = 1; i < arr.length; i = i + 12, year++) {
+      const elements = arr.slice(i, 12 + i);
+
+      const collapsibleContent = (
+        <CollapsibleTableFiis elements={elements} year={year} />
+      );
+
+      arrWithCollapsible.push(collapsibleContent);
+    }
+    setData(arrWithCollapsible);
   };
 
   return (
@@ -210,7 +216,7 @@ export default function FiisCalc() {
               </div>
             </ErrorContainer>
           </CardContent>
-          <CardContent className="grid grid-cols-3 gap-4">
+          <CardContent className="grid">
             <div className="flex items-center gap-2">
               <Checkbox
                 checked={hasReinvest}
@@ -227,34 +233,7 @@ export default function FiisCalc() {
         </Card>
       </form>
 
-      <Card className="shadow-slate-400 shadow-lg mt-6">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="w-[100px]">Mês</TableHead>
-              <TableHead>N&#186; de cotas</TableHead>
-              <TableHead>Em conta</TableHead>
-              <TableHead>Total investido</TableHead>
-              <TableHead>Total dividendos ganhos</TableHead>
-              <TableHead className="text-right">Dividendo mensal</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {data.map((v) => (
-              <TableRow key={v.month}>
-                <TableCell className="font-medium">{v.month}</TableCell>
-                <TableCell>{v.quotas}</TableCell>
-                <TableCell>R$ {v.inCount}</TableCell>
-                <TableCell>R$ {v.totalInvest}</TableCell>
-                <TableCell>R$ {v.totalDividend}</TableCell>
-                <TableCell className="text-right">
-                  R$ {v.monthlyDividend}
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </Card>
+      <Card className="shadow-slate-400 shadow-lg mt-6">{data}</Card>
     </div>
   );
 }
