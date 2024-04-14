@@ -80,7 +80,9 @@ export default function FiisCalc() {
         const quantityBuy = Math.floor(
           Number(monthlyInvest) / Number(currentPrice)
         );
+
         const quotas = Number(quantity) + quantityBuy;
+
         arr.push({
           month: index + 1,
           quotas,
@@ -91,21 +93,25 @@ export default function FiisCalc() {
         });
       } else {
         const prev = arr.at(-1);
-        const currentInCount = Number(monthlyInvest) + (prev?.inCount ?? 0);
+        const currentInCount =
+          Number(monthlyInvest) + (hasReinvest ? prev?.inCount ?? 0 : 0);
 
         const quantityBuy = Math.floor(currentInCount / Number(currentPrice));
 
         const quotas = (prev?.quotas ?? 0) + quantityBuy;
+
+        const inCount = hasReinvest
+          ? currentInCount -
+            quantityBuy * Number(currentPrice) +
+            quotas * Number(lastIncome)
+          : (prev?.totalDividend ?? 0) + quotas * Number(lastIncome);
 
         arr.push({
           month: index + 1,
           quotas,
           totalInvest:
             (prev?.totalInvest ?? 0) + quantityBuy * Number(currentPrice),
-          inCount:
-            currentInCount -
-            quantityBuy * Number(currentPrice) +
-            quotas * Number(lastIncome),
+          inCount,
           totalDividend:
             (prev?.totalDividend ?? 0) + quotas * Number(lastIncome),
           monthlyDividend: quotas * Number(lastIncome),
@@ -222,7 +228,6 @@ export default function FiisCalc() {
                 checked={hasReinvest}
                 id="reinvest"
                 onCheckedChange={(e) => setHasReinvest(e as boolean)}
-                disabled
               />
               <Label htmlFor="reinvest">Reinvestir dividendos ganhos</Label>
             </div>
