@@ -134,7 +134,7 @@ export default function FiisCalc() {
   };
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 md:w-full w-dvw">
       <form onSubmit={handleSubmit(calc)}>
         <Card className="shadow-slate-400 shadow-lg">
           <CardHeader>
